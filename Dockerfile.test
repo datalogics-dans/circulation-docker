@@ -20,6 +20,9 @@ EXPOSE 80
 
 CMD ["/sbin/my_init"]
 
+##########
+## BASE
+##########
 # # If you launch the container interactively with `docker run -it`,
 # # this is where you'll end up:
 # ENTRYPOINT ["/bin/bash"]
@@ -45,3 +48,27 @@ CMD ["/sbin/my_init"]
 # 
 # # remove logrotate for dpkg as we will do our own in the default_logrotate.
 # RUN rm -rf /etc/logrotate.d/dpkg
+
+##########
+## DEPLOY
+##########
+# CMD ["-c", "set_simplified_environment && manage_simplified_database && supervisord"]
+
+##########
+## SCRIPTS
+##########
+# FROM nypl/circ-base
+# MAINTAINER Library Simplified <info@librarysimplified.org>
+# 
+# ENV TZ=US/Eastern
+# 
+# # Switch to local timezone
+# RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
+# 
+# # Create cron tasks & logfile
+# RUN touch /var/log/cron.log
+# COPY libsimple_crontab /etc/cron.d/circulation
+# 
+# WORKDIR ./bin
+# 
+# CMD ["-c", "set_simplified_environment && manage_simplified_database && supervisord"]
